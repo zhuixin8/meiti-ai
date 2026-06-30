@@ -1,8 +1,8 @@
 <div align="center">
 
-<img src="assets/social-preview.png" alt="美媒 · AI 自媒体内容运营平台" width="100%" />
+<img src="assets/social-preview.png" alt="ALQQ · AI 自媒体内容运营平台" width="100%" />
 
-# 美媒 · AI 自媒体内容运营平台
+# ALQQ · AI 自媒体内容运营平台
 
 ### 一次创作，一键分发到 20+ 主流平台 —— **完全免费**
 
@@ -15,8 +15,12 @@
 [![下载](https://img.shields.io/badge/⬇_桌面端-下载安装包-2ea44f)](https://github.com/zhuixin8/meiti-ai/releases/latest)
 [![AI](https://img.shields.io/badge/AI-多模型可选-purple)](#-接入的-ai-模型)
 [![授权](https://img.shields.io/badge/授权-专有软件·免费使用-lightgrey)](LICENSE)
+[![官网](https://img.shields.io/badge/🌐_官网-www.alqq.cn-1E40AF)](https://www.alqq.cn/)
+[![API](https://img.shields.io/badge/📖_开放_API-开发者接入-6366f1)](https://alqq.cn/api/openapi/v1/reference)
 
 ### 📥 [点此下载 Windows 桌面端（最新版）](https://github.com/zhuixin8/meiti-ai/releases/latest)
+
+### 🌐 [官网 www.alqq.cn](https://www.alqq.cn/) ｜ 📖 [开放 API 文档（开发者接入）](https://alqq.cn/api/openapi/v1/reference)
 
 **👉 [扫码加微信，免费领取使用](#-免费领取--加入交流群) · 进群一起玩转自媒体自动化运营**
 
@@ -26,7 +30,7 @@
 
 ## 💡 这是什么
 
-**美媒** 是一款面向自媒体创作者、工作室、矩阵号运营者的 **AI 内容生产 + 多平台自动分发** 平台。
+**ALQQ** 是一款面向自媒体创作者、工作室、矩阵号运营者的 **AI 内容生产 + 多平台自动分发** 平台。
 
 **图文文章、动态/微头条、视频** 三种内容形态全都能发 —— 你只需要在一个后台里完成创作或上传，剩下的繁琐工作（改写、配图、登录各平台、逐个上传/复制粘贴、排版、设封面、加话题、定时发布）**全部交给它自动完成**。
 
@@ -136,6 +140,14 @@ DeepSeek · 硅基流动 · 智谱 AI（GLM）· 火山引擎（豆包）· Clou
 
 ---
 
+## 🔌 开放 API（开发者接入）
+
+提供完整的 **REST 开放 API** —— 用 API 密钥即可程序化 **生成文章、发布图文 / 视频、查询发布记录与额度**，轻松接入 n8n / Coze / 自有系统与自动化流程。
+
+👉 **[在线 API 文档](https://alqq.cn/api/openapi/v1/reference)**（可直接在线调试 · 一键导入 Apifox / Postman）
+
+---
+
 ## 🖥️ 两种使用方式
 
 | | 网页端 | 桌面端（推荐） |
@@ -207,7 +219,7 @@ DeepSeek · 硅基流动 · 智谱 AI（GLM）· 火山引擎（豆包）· Clou
 
 ## 📄 授权说明
 
-「美媒」是**免费但专有**的软件:个人可免费使用,但**软件本身不开源**。
+「ALQQ」是**免费但专有**的软件:个人可免费使用,但**软件本身不开源**。
 
 本仓库仅包含项目介绍、界面截图、二维码与安装包,**不含源代码**。未经书面授权,禁止反编译、二次分发、转售或克隆为同类产品。详见 [LICENSE](LICENSE)。如需商业授权或合作,请通过上方联系方式联系我们。
 
@@ -217,7 +229,7 @@ DeepSeek · 硅基流动 · 智谱 AI（GLM）· 火山引擎（豆包）· Clou
 
 ## English
 
-**Meiti** — a **free** AI-powered content operation platform for social-media creators.
+**ALQQ** — a **free** AI-powered content operation platform for social-media creators.
 
 **Create once, publish everywhere.** Generate articles with AI, remove the "AI flavor", and automatically distribute **articles, moments and videos** to **20+ major platforms** (Baijiahao, Toutiao, WeChat, Douyin, Bilibili, Kuaishou, Zhihu, Xiaohongshu, Weibo, TikTok, Instagram, Facebook, and more). **Video upload & distribution is supported on 17 platforms.**
 
@@ -229,7 +241,7 @@ DeepSeek · 硅基流动 · 智谱 AI（GLM）· 火山引擎（豆包）· Clou
 
 <br/>
 
-**美媒 · 让自媒体运营更轻松** — 一次创作 · 一键分发 · 永久免费
+**ALQQ · 让自媒体运营更轻松** — 一次创作 · 一键分发 · 永久免费
 
 ⭐ 觉得好用，欢迎 **Star** 支持！
 
