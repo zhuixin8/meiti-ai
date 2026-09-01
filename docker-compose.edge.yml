@@ -20,3 +20,4 @@ services:
 volumes:
     alqq-edge-data:
         name: alqq-edge-data
+        external: true
