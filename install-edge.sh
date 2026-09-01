@@ -44,9 +44,9 @@ curl -fsSL \
 PAIRING_CODE="${ALQQ_PAIRING_CODE:-}"
 if ! docker run --rm --entrypoint sh -v alqq-edge-data:/data "$IMAGE" \
     -lc 'test -s /data/edge-token' >/dev/null 2>&1; then
-    if [ -z "$PAIRING_CODE" ] && [ -t 0 ]; then
-        printf '请输入主站“自动化 → 执行节点”生成的配对码: '
-        read -r PAIRING_CODE
+    if [ -z "$PAIRING_CODE" ] && [ -r /dev/tty ]; then
+        printf '请输入主站“自动化 → 执行节点”生成的配对码: ' > /dev/tty
+        IFS= read -r PAIRING_CODE < /dev/tty
     fi
     if [ -z "$PAIRING_CODE" ]; then
         echo "首次安装必须提供 ALQQ_PAIRING_CODE。" >&2
@@ -83,6 +83,18 @@ fi
 # 配对码只使用一次。配对成功后立即从持久配置及容器环境中移除。
 sed -i 's/^ALQQ_PAIRING_CODE=.*/ALQQ_PAIRING_CODE=/' "$INSTALL_DIR/.env"
 docker compose -f "$INSTALL_DIR/docker-compose.yml" --env-file "$INSTALL_DIR/.env" up -d --force-recreate >/dev/null
+
+for _ in $(seq 1 30); do
+    if docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' alqq-edge 2>/dev/null | grep -qx healthy; then
+        break
+    fi
+    sleep 2
+done
+if ! docker inspect --format '{{if .State.Health}}{{.State.Health.Status}}{{end}}' alqq-edge 2>/dev/null | grep -qx healthy; then
+    echo "节点已配对，但重启后的健康检查未通过。最近日志如下:" >&2
+    docker logs --tail 50 alqq-edge >&2 || true
+    exit 1
+fi
 
 echo "ALQQ Linux 执行节点已安装并完成配对。"
 echo "管理入口: https://www.alqq.cn/app/execution-nodes"
