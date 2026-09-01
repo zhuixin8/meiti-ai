@@ -1,0 +1,21 @@
+services:
+    alqq-edge:
+        image: alqq/edge-agent:${ALQQ_EDGE_VERSION:-1.0.0}
+        container_name: alqq-edge
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            TZ: Asia/Shanghai
+        volumes:
+            - alqq-edge-data:/data
+        ports:
+            - "127.0.0.1:${ALQQ_HEALTH_PORT:-8787}:8787"
+        shm_size: 1gb
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+
+volumes:
+    alqq-edge-data:

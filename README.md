@@ -59,6 +59,43 @@ ALQQ 桌面端 **2.0** 是一次彻底重写 —— 底层换成全新的 **Taur
 
 ---
 
+## 🐳 Linux / 宝塔 Docker 无人值守节点
+
+不想让 Windows 电脑长期挂机时，可以在自己的 Linux 服务器或宝塔 Docker 中安装 **ALQQ Linux 执行节点**。账号登录仍在 Windows 桌面端完成；Cookie 加密保存到主站后，用户可以把指定账号绑定到 Linux 节点，由服务器全天候执行定时发布。
+
+Linux 节点没有独立管理后台，登录、账号、计划、内容、日志、节点授权和停用均在 [ALQQ 主站](https://www.alqq.cn/) 统一管理。
+
+### 一键安装
+
+1. 登录主站，进入「自动化 → 执行节点」，创建一个 15 分钟有效的一次性配对码。
+2. 在宝塔终端或 Linux SSH 中运行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/install-edge.sh | sudo bash
+```
+
+3. 按提示输入配对码，回到主站把需要托管的账号绑定到该节点。
+
+无人值守安装也可直接传入配对码：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/install-edge.sh \
+  | sudo ALQQ_PAIRING_CODE=ABCDE-23456 bash
+```
+
+> 🔐 GitHub 仓库不包含生成、调度或发布源码。下载的是签名版本对应的加密字节码镜像；节点必须经 `alqq.cn` 授权并取得短期会话密钥才能加载发布引擎。配对成功后，一次性配对码会自动从容器配置中清除。
+
+### 常用运维
+
+```bash
+cd /opt/alqq-edge
+docker compose ps
+docker compose logs -f --tail 100
+docker compose restart
+```
+
+---
+
 ## 🖼️ 界面预览
 
 <table>
