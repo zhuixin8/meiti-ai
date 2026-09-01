@@ -54,6 +54,7 @@ services:
             - .env
         environment:
             TZ: Asia/Shanghai
+            ALQQ_APP_VERSION: ${ALQQ_EDGE_VERSION:-1.0.0}
         volumes:
             - alqq-edge-data:/data
         ports:
