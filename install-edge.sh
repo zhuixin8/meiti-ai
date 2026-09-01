@@ -19,6 +19,13 @@ if ! docker compose version >/dev/null 2>&1; then
     echo "未检测到 Docker Compose v2，请先在宝塔面板安装或升级 Docker。" >&2
     exit 1
 fi
+case "$(uname -m)" in
+    x86_64|amd64) ;;
+    *)
+        echo "当前版本仅支持 x86_64/amd64 Linux 服务器。" >&2
+        exit 1
+        ;;
+esac
 
 mkdir -p "$INSTALL_DIR"
 chmod 700 "$INSTALL_DIR"
