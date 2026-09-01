@@ -44,9 +44,31 @@ curl -fL --retry 3 --connect-timeout 15 \
 gzip -dc "$TMP_DIR/$ARCHIVE" | docker load >/dev/null
 docker image inspect "$IMAGE" >/dev/null
 
-curl -fsSL \
-    "https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/docker-compose.edge.yml" \
-    -o "$INSTALL_DIR/docker-compose.yml"
+cat > "$INSTALL_DIR/docker-compose.yml" <<'COMPOSE'
+services:
+    alqq-edge:
+        image: alqq/edge-agent:${ALQQ_EDGE_VERSION:-1.0.0}
+        container_name: alqq-edge
+        restart: unless-stopped
+        env_file:
+            - .env
+        environment:
+            TZ: Asia/Shanghai
+        volumes:
+            - alqq-edge-data:/data
+        ports:
+            - "127.0.0.1:${ALQQ_HEALTH_PORT:-8787}:8787"
+        shm_size: 1gb
+        security_opt:
+            - no-new-privileges:true
+        cap_drop:
+            - ALL
+
+volumes:
+    alqq-edge-data:
+        name: alqq-edge-data
+        external: true
+COMPOSE
 
 PAIRING_CODE="${ALQQ_PAIRING_CODE:-}"
 if ! docker run --rm --entrypoint sh -v alqq-edge-data:/data "$IMAGE" \

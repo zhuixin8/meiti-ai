@@ -73,7 +73,7 @@ Linux 节点没有独立管理后台，登录、账号、计划、内容、日�
 2. 在宝塔终端或 Linux SSH 中运行：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/install-edge.sh | sudo bash
+curl -fsSL https://github.com/zhuixin8/meiti-ai/releases/download/edge-v1.0.0/install-edge.sh | sudo bash
 ```
 
 3. 按提示输入配对码，回到主站把需要托管的账号绑定到该节点。
@@ -81,7 +81,7 @@ curl -fsSL https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/install-edge
 无人值守安装也可直接传入配对码：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/zhuixin8/meiti-ai/main/install-edge.sh \
+curl -fsSL https://github.com/zhuixin8/meiti-ai/releases/download/edge-v1.0.0/install-edge.sh \
   | sudo ALQQ_PAIRING_CODE=ABCDE-23456 bash
 ```
 
