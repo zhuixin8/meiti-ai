@@ -1,0 +1,59 @@
+name: Publish Edge multi-arch images
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Edge release tag (for example edge-v1.1.2)
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  image:
+    if: startsWith(github.event.release.tag_name || inputs.tag, 'edge-v')
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64]
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - name: Download signed image archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${RELEASE_TAG#edge-v}"
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "alqq-edge-agent-${VERSION}-linux-${{ matrix.arch }}.tar.gz"
+          gzip -dc "alqq-edge-agent-${VERSION}-linux-${{ matrix.arch }}.tar.gz" | docker load
+
+      - name: Publish architecture image
+        run: |
+          VERSION="${RELEASE_TAG#edge-v}"
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker tag "alqq/edge-agent:${VERSION}-${{ matrix.arch }}" \
+            "ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/alqq-edge-agent:${VERSION}-${{ matrix.arch }}"
+          docker push "ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/alqq-edge-agent:${VERSION}-${{ matrix.arch }}"
+
+  manifest:
+    needs: image
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - name: Publish multi-arch manifest
+        run: |
+          VERSION="${RELEASE_TAG#edge-v}"
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/alqq-edge-agent"
+          echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker buildx imagetools create \
+            --tag "${IMAGE}:${VERSION}" \
+            "${IMAGE}:${VERSION}-amd64" \
+            "${IMAGE}:${VERSION}-arm64"
