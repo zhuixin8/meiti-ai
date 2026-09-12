@@ -25,7 +25,7 @@ Windows 10 / 11 x64 · 约 166.7 MiB · [更新与校验说明](RELEASE-2.1.0.md
 
 ## 💡 ALQQ 能做什么
 
-**ALQQ** 为个人创作者、内容工作室和品牌运营团队提供内容创作与多平台发布工具。你可以根据热点或自己的选题生成文章，结合产品资料和知识库配图、调整文风，再把文章、动态或已有视频发布到选定账号。
+**ALQQ** 为个人创作者、内容工作室和品牌运营团队提供内容创作与多平台发布工具。你可以根据热点或自己的选题生成文章，结合产品资料和知识库配图、调整文风，再把文章、动态发布到选定账号；界面中的视频发布入口统一在 Windows 桌面端使用。
 
 Windows 桌面端使用你的电脑和网络完成浏览器发布；网页端方便管理内容、账号与计划；Linux 执行节点适合需要长期在线的自托管任务。三种方式共用 ALQQ 账号和业务数据。
 
@@ -61,7 +61,7 @@ Windows 桌面端使用你的电脑和网络完成浏览器发布；网页端方
 
 ## 🐳 Linux / 宝塔执行节点
 
-不想让 Windows 电脑长期挂机时，可以在自己的 Linux 服务器或宝塔 Docker 中安装执行节点。先在 Windows 桌面端完成平台账号登录，再将支持托管的账号绑定到节点。
+不想让 Windows 电脑长期挂机时，可以在自己的 Linux 服务器或宝塔 Docker 中安装执行节点。先在 Windows 桌面端完成平台账号登录，再将支持托管的账号绑定到节点。通过 OpenAPI 发布远程视频直链的条件见下方「开放 API」。
 
 账号、计划、内容与日志统一在 [ALQQ 主站](https://www.alqq.cn/) 管理；节点需要对应套餐或授权。
 
@@ -228,7 +228,9 @@ ALQQ 支持免费注册，桌面端可免费下载。
 
 **自有站点接入**：PbootCMS、InnoShop。
 
-其中 **19 个平台支持视频发布**。**YouTube 目前仅支持桌面端视频发布**：登录 YouTube Studio 后，可预设可见性、儿童内容、标签、分类和描述等。
+其中 **19 个平台支持视频发布，界面中的视频发布功能均仅支持 Windows 桌面端**，不是仅限 YouTube。网页端不提供视频发布；本地视频文件需使用桌面端。OpenAPI 的远程视频直链发布另有执行端要求，见下方说明。
+
+**YouTube 发布预设**：登录 YouTube Studio 后，可预设可见性、儿童内容、标签、分类和描述等。
 
 ---
 
@@ -243,7 +245,7 @@ ALQQ 支持免费注册，桌面端可免费下载。
 
 ### 发布与账号管理
 
-- **文章与视频分发**：选择兼容平台和多个账号，减少重复填写、上传和排版。
+- **文章分发与桌面端视频发布**：选择兼容平台和多个账号，减少重复填写、上传和排版；界面中的视频发布功能统一由 Windows 桌面端提供。
 - **动态 / 微头条**：支持头条、百家号、抖音、搜狐、公众号和微博的短内容发布。
 - **账号发布预设**：按平台保存封面、标签、可见性等常用设置。
 - **任务记录**：查看发布进度、平台结果和失败原因；可能已经提交的任务先核查，再决定是否重试。
@@ -266,6 +268,8 @@ ALQQ 支持免费注册，桌面端可免费下载。
 
 通过 API 调用文章生成、内容发布、发布记录及额度查询，可用于接入 n8n、Coze 或自有系统。使用前请确认账号具有相应权限。
 
+**API 视频发布**：远程视频直链可通过 OpenAPI 交给已授权的 Linux 执行节点（`executor=edge`）执行，需同时满足节点实际能力、账号绑定与调用权限；不支持网页云执行（`executor=web`）。本地视频文件仍仅支持桌面端发布，YouTube 不支持节点执行。
+
 接口与调用示例见 [在线 API 文档](https://alqq.cn/api/openapi/v1/reference)。
 
 ---
@@ -274,9 +278,9 @@ ALQQ 支持免费注册，桌面端可免费下载。
 
 | 使用方式 | 适合什么情况 | 发布在哪里执行 |
 |---|---|---|
-| **网页端** | 随时查看内容、管理账号和计划 | 根据账号绑定与权限，由可用执行端完成；云端任务共享调度资源 |
+| **网页端** | 随时查看内容、管理账号和计划 | 根据账号绑定与权限，由可用执行端完成；云端任务共享调度资源，不支持视频发布 |
 | **Windows 桌面端** | 日常创作、本机发布、使用自己的 AI / 图片服务 | 在你的电脑上执行，需要客户端在线 |
-| **Linux 执行节点** | 不方便让个人电脑长期挂机 | 在你自己的服务器上执行，需要完成配对与授权 |
+| **Linux 执行节点** | 不方便让个人电脑长期挂机 | 在你自己的服务器上执行，需要完成配对与授权；OpenAPI 远程视频直链发布另需满足节点能力、绑定与权限 |
 
 **数据如何保存**：图片缓存与草稿可保存在本机；平台账号登录信息加密保存在主站，桌面端发布时按授权获取，不作为本地草稿或缓存保存。桌面端仍需联网使用账号、计划和所选 AI / 图片服务。
 
@@ -342,7 +346,9 @@ ALQQ 是专有软件，个人可按许可免费使用，软件业务源码不公
 
 **ALQQ** helps creators and content teams write, illustrate and publish from one workspace.
 
-Create article drafts from topics or reference material, adjust the writing style, add images, then publish to selected accounts. ALQQ also supports short posts, video uploads, account presets and scheduled tasks. Integrations cover **22 content platforms plus PbootCMS and InnoShop**; available content types vary by platform. **YouTube video publishing currently requires the Windows desktop app.**
+Create article drafts from topics or reference material, adjust the writing style, add images, then publish to selected accounts. ALQQ also supports short posts, video uploads, account presets and scheduled tasks. Integrations cover **22 content platforms plus PbootCMS and InnoShop**; available content types vary by platform. **Video publishing is supported on 19 platforms. In the user interface, video publishing is available only in the Windows desktop app, not just for YouTube. Local video files require the desktop app.** YouTube account presets include visibility, audience, tags, category and description.
+
+**OpenAPI video publishing:** remote video URLs can be submitted to an authorized Linux execution node (`executor=edge`), subject to the node's actual capabilities, account binding and API permissions. Web/cloud execution (`executor=web`) is not supported for video. YouTube remains desktop-only, including through the API.
 
 Use the **web app** for content and account management, the **Windows desktop app** to publish from your own computer, or a **Linux execution node** for tasks on your own server.
 
