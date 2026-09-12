@@ -1,23 +1,26 @@
 services:
     alqq-edge:
-        image: alqq/edge-agent:${ALQQ_EDGE_VERSION:-1.0.0}
+        image: alqq/edge-agent:${ALQQ_EDGE_VERSION}
+        pull_policy: never
         container_name: alqq-edge
         restart: unless-stopped
-        env_file:
-            - .env
-        environment:
-            TZ: Asia/Shanghai
-            ALQQ_APP_VERSION: ${ALQQ_EDGE_VERSION:-1.0.0}
-        volumes:
-            - alqq-edge-data:/data
-        ports:
-            - "127.0.0.1:${ALQQ_HEALTH_PORT:-8787}:8787"
+        env_file: [.env]
+        ports: ["127.0.0.1:${ALQQ_HEALTH_PORT:-8787}:8787"]
+        volumes: ["alqq-edge-data:/data"]
         shm_size: 1gb
-        security_opt:
-            - no-new-privileges:true
-        cap_drop:
-            - ALL
-
+        init: true
+        pids_limit: 512
+        stop_grace_period: 90s
+        read_only: true
+        tmpfs:
+            - /tmp:size=512m,mode=1777
+            - /run:size=16m,mode=755
+        security_opt: ["no-new-privileges:true"]
+        cap_drop: [ALL]
+        labels:
+            createdBy: "bt_apps"
+            com.alqq.component: "edge-agent"
+            com.alqq.version: "${ALQQ_EDGE_VERSION}"
 volumes:
     alqq-edge-data:
         name: alqq-edge-data

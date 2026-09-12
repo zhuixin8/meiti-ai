@@ -1,0 +1,3 @@
+# Keep executable installation scripts and published checksums stable across OSes.
+*.sh text eol=lf
+SHA256SUMS.txt text eol=lf
