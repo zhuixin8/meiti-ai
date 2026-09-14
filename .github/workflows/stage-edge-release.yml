@@ -4,7 +4,48 @@ on:
 permissions:
   contents: write
 jobs:
+  verify_arm:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    env:
+      BASE_URL: https://www.alqq.cn/updates/edge-releases/1.1.6
+    steps:
+      - name: Verify ARM64 browser before release
+        run: |
+          set -euo pipefail
+          ARCHIVE=alqq-edge-agent-1.1.6-linux-arm64.tar.gz
+          for FILE in "$ARCHIVE" "$ARCHIVE.sha256" "$ARCHIVE.sig" release-signing-public.pem; do
+            curl -fsSL --retry 3 --max-time 900 "$BASE_URL/$FILE" -o "$FILE"
+          done
+          test "$(openssl pkey -pubin -in release-signing-public.pem -outform DER | sha256sum | cut -d ' ' -f1)" = d3299865b968a244cdb1fcc563053c39a0c7576f2d43ad25a4f45216863893d9
+          sha256sum -c "$ARCHIVE.sha256"
+          openssl pkeyutl -verify -pubin -inkey release-signing-public.pem -rawin -in "$ARCHIVE" -sigfile "$ARCHIVE.sig"
+          gzip -dc "$ARCHIVE" | docker load
+          test "$(docker image inspect --format '{{.Architecture}}' alqq/edge-agent:1.1.6)" = arm64
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 512 --memory 3g --shm-size 1g \
+            --tmpfs /tmp:size=512m,mode=1777 --tmpfs /data:size=64m,uid=10001,gid=10001 \
+            -e LOG_DIR=/tmp/edge-browser-test-logs -e ALQQ_DATA_DIR=/tmp/edge-browser-test-data \
+            --entrypoint node alqq/edge-agent:1.1.6 -e '
+          const assert = require("node:assert/strict")
+          const root = "/opt/alqq/engine"
+          const req = require("node:module").createRequire(root + "/package.json")
+          req("bytenode")
+          const deadline = setTimeout(() => { console.error("Browser smoke test timed out"); process.exit(2) }, 60000)
+          async function main() {
+              const factory = req(root + "/server/utils/browserFactory")
+              const browser = await factory.chromium.launch(factory.buildLaunchOptions({ headless: true, proxyMode: "direct" }))
+              try {
+                  const page = await browser.newPage()
+                  await page.goto("data:text/html,<h1>ALQQ native ARM64 verified</h1>", { waitUntil: "domcontentloaded", timeout: 20000 })
+                  assert.equal(await page.locator("h1").textContent(), "ALQQ native ARM64 verified")
+                  console.log(JSON.stringify({ arch: process.arch, browser: true, externalPublishing: false }))
+              } finally { await browser.close() }
+          }
+          main().then(() => clearTimeout(deadline)).catch(error => { clearTimeout(deadline); console.error(error); process.exitCode = 1 })
+          '
   stage:
+    needs: verify_arm
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
