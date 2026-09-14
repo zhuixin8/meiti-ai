@@ -13,9 +13,12 @@ jobs:
       - name: Verify ARM64 browser before release
         run: |
           set -euo pipefail
+          command -v aria2c >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y -qq aria2; }
           ARCHIVE=alqq-edge-agent-1.1.6-linux-arm64.tar.gz
           for FILE in "$ARCHIVE" "$ARCHIVE.sha256" "$ARCHIVE.sig" release-signing-public.pem; do
-            curl -fsSL --retry 3 --max-time 900 "$BASE_URL/$FILE" -o "$FILE"
+            aria2c --max-connection-per-server=8 --split=8 --min-split-size=4M --max-download-limit=4M \
+              --file-allocation=none --max-tries=3 --retry-wait=3 --timeout=60 --summary-interval=15 \
+              --out="$FILE" "$BASE_URL/$FILE"
           done
           test "$(openssl pkey -pubin -in release-signing-public.pem -outform DER | sha256sum | cut -d ' ' -f1)" = d3299865b968a244cdb1fcc563053c39a0c7576f2d43ad25a4f45216863893d9
           sha256sum -c "$ARCHIVE.sha256"
@@ -61,8 +64,11 @@ jobs:
       - name: Download and verify assets
         run: |
           set -euo pipefail
+          command -v aria2c >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y -qq aria2; }
           for NAME in alqq-edge-agent-1.1.6-linux-amd64.tar.gz alqq-edge-agent-1.1.6-linux-arm64.tar.gz alqq-edge-baota-apphub.zip install-edge.sh; do
-            curl -fsSL --retry 3 --max-time 900 "$BASE_URL/$NAME" -o "$NAME" &
+            aria2c --max-connection-per-server=8 --split=8 --min-split-size=4M --max-download-limit=4M \
+              --file-allocation=none --max-tries=3 --retry-wait=3 --timeout=60 --summary-interval=15 \
+              --out="$NAME" "$BASE_URL/$NAME" &
             curl -fsSL --retry 3 --max-time 60 "$BASE_URL/$NAME.sha256" -o "$NAME.sha256"
             curl -fsSL --retry 3 --max-time 60 "$BASE_URL/$NAME.sig" -o "$NAME.sig"
           done
