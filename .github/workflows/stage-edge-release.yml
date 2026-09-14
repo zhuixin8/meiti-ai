@@ -1,0 +1,45 @@
+name: Stage signed Edge release assets
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_ID: '388185445'
+      BASE_URL: https://www.alqq.cn/updates/edge-releases/1.1.6
+    steps:
+      - name: Validate target draft
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" --jq '.tag_name + ":" + (.draft|tostring)')" = 'edge-v1.1.6:true'
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" --jq '.assets|length')" = 0
+      - name: Download and verify assets
+        run: |
+          set -euo pipefail
+          for NAME in alqq-edge-agent-1.1.6-linux-amd64.tar.gz alqq-edge-agent-1.1.6-linux-arm64.tar.gz alqq-edge-baota-apphub.zip install-edge.sh; do
+            curl -fsSL --retry 3 --max-time 900 "$BASE_URL/$NAME" -o "$NAME" &
+            curl -fsSL --retry 3 --max-time 60 "$BASE_URL/$NAME.sha256" -o "$NAME.sha256"
+            curl -fsSL --retry 3 --max-time 60 "$BASE_URL/$NAME.sig" -o "$NAME.sig"
+          done
+          wait
+          curl -fsSL --retry 3 "$BASE_URL/release-signing-public.pem" -o release-signing-public.pem
+          test "$(openssl pkey -pubin -in release-signing-public.pem -outform DER | sha256sum | cut -d ' ' -f1)" = d3299865b968a244cdb1fcc563053c39a0c7576f2d43ad25a4f45216863893d9
+          for NAME in alqq-edge-agent-1.1.6-linux-amd64.tar.gz alqq-edge-agent-1.1.6-linux-arm64.tar.gz alqq-edge-baota-apphub.zip install-edge.sh; do
+            sha256sum -c "$NAME.sha256"
+            openssl pkeyutl -verify -pubin -inkey release-signing-public.pem -rawin -in "$NAME" -sigfile "$NAME.sig"
+          done
+      - name: Upload assets to draft without publishing
+        run: |
+          set -euo pipefail
+          for FILE in alqq-edge-agent-1.1.6-linux-*.tar.gz* alqq-edge-baota-apphub.zip* install-edge.sh* release-signing-public.pem; do
+            curl --fail-with-body -sS -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+              -H 'Content-Type: application/octet-stream' --data-binary "@$FILE" \
+              "https://uploads.github.com/repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID/assets?name=$FILE" > /dev/null
+            echo "Uploaded $FILE"
+          done
+          test "$(gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" --jq '.assets|length')" = 13
