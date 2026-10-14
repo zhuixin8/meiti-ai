@@ -13,6 +13,7 @@
 [![使用](https://img.shields.io/badge/桌面端-免费下载-success)](#-使用与费用)
 [![平台](https://img.shields.io/badge/内容平台-22_个-blue)](#-支持的平台)
 [![下载](https://img.shields.io/badge/Windows_x64-2.1.7-2ea44f)](https://www.alqq.cn/download/desktop)
+[![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-已上架-0078D4)](https://apps.microsoft.com/detail/9P75HV6KJV0N?hl=zh-CN&gl=CN)
 [![授权](https://img.shields.io/badge/授权-专有软件-lightgrey)](LICENSE)
 
 ### 📥 [官网下载 Windows 桌面端 2.1.7（推荐）](https://www.alqq.cn/download/desktop)
@@ -23,7 +24,7 @@
 
 Windows 10 / 11 x64 · 约 202.4 MiB · [更新与校验说明](RELEASE-2.1.7.md) · [开发进度](DEVELOPMENT.md)
 
-更新日期：2026-10-13。官网与 GitHub 提供同一份正式 2.1.7 安装包，官网低版本完整升级入口已启用；后续发布引擎修复通过匹配基线的签名热更新提供。微软商店内部包号 2.1.701.0 已提交正式认证，是否可下载以商店页面为准。
+更新日期：2026-10-14。官网与 GitHub 提供同一份正式 2.1.7 安装包，官网低版本完整升级入口已启用；后续发布引擎修复通过匹配基线的签名热更新提供。**微软商店 2.1.701.0 已通过认证并上架，程序显示版本仍为 2.1.7**；10 月 14 日已核对合作伙伴中心的当前公开提交与 Windows x64 首选包。
 
 [官网](https://www.alqq.cn/) · [免费注册](https://www.alqq.cn/register) · [功能介绍](#-主要功能) · [交流与反馈](#-交流与反馈)
 
@@ -33,7 +34,7 @@ Windows 10 / 11 x64 · 约 202.4 MiB · [更新与校验说明](RELEASE-2.1.7.md
 
 
 
-## 2026-10-13 开发与部署进展
+## 2026-10-14 开发与部署进展
 
 **Windows 2.1.7 已正式发布。** 已完成精确安装包的 2.1.6 → 2.1.7 升级、登录和主题保留、搜狐号/视频号同步与重启、新手引导及真实 API 只读预检。缺少 WebView2 的纯净安装测试未完成，经项目负责人明确接受该例外后发布，不将未测项目写成通过。
 
@@ -46,6 +47,8 @@ Windows 10 / 11 x64 · 约 202.4 MiB · [更新与校验说明](RELEASE-2.1.7.md
 | 结果核验 | 有限自动回查；超期未确认时提示用户到平台查看，区分实时异常与历史待核对，不自动清空、判成功或重发 |
 | 10 月 13 日引擎热更新 | 知乎图片上传协议与诊断改进；自有站点图片暂态故障有限重试；搜狐优先按作品 ID 核验，避免同名草稿误判 |
 | Web 与运维 | 页面标题随导航变化；SMTP 连接恢复；Sentry 后端低比例追踪、定时任务打点与脱敏业务信号完善 |
+| Microsoft Store | 2.1.701.0 已通过认证并公开上架；显示版本 2.1.7，由微软商店管理安装和更新 |
+| 网站第三方登录 | Google 基本身份登录与原账号绑定已部署为小范围测试，未面向所有用户开放；原密码登录保留，QQ 登录尚未上线 |
 | Linux 节点 | 受控 Agent 1.2.1 节点收到匹配热更新；公开安装入口仍为 Edge 1.1.8，不代表所有节点自动升级 |
 
 10 月 13 日发布器补丁回归：后端/共享逻辑 **8,053 项通过、379 项跳过、0 失败**，Windows/Linux 实际编译模块隔离测试及签名更新拒绝测试通过。测试没有重复发布已有文章；平台 403、远端网络与内容审核仍可能需要人工处理，不承诺所有平台真实发布均无故障。
@@ -58,7 +61,7 @@ Windows 10 / 11 x64 · 约 202.4 MiB · [更新与校验说明](RELEASE-2.1.7.md
 
 本版改善桌面会话确认与重连、账号切换隔离、本机扫描回执恢复、安装前草稿保存及 Windows 用户级凭据保护；正常连接不再占用整块提示区域。官网版通过 ALQQ 更新，商店版通过 Microsoft Store 更新，请选择一个渠道安装，不用官网 EXE 覆盖商店版。
 
-以上为 10 月 4 日历史维护记录。后续 2.1.7 已正式发布，微软商店 2.1.701.0 已于 10 月 13 日提交；当前进度见 [开发进度](DEVELOPMENT.md)，不沿用旧稿中的商店状态。
+以上为 10 月 4 日历史维护记录。后续 2.1.7 已正式发布，微软商店 2.1.701.0 已通过认证并上架；当前进度见 [开发进度](DEVELOPMENT.md)，不沿用旧稿中的商店状态。
 
 ## 💡 ALQQ 能做什么
 
@@ -71,10 +74,10 @@ Windows 桌面端使用你的电脑和网络完成浏览器发布；网页端方
 | 渠道 | 入口 | 更新方式 |
 | --- | --- | --- |
 | **官网下载（推荐）** | [下载 Windows 桌面端](https://www.alqq.cn/download/desktop) | 由 ALQQ 提供官网版更新 |
-| Microsoft Store | [商店应用页面](https://apps.microsoft.com/detail/9P75HV6KJV0N?hl=zh-CN&gl=CN) | 由微软商店分发审核通过的版本，可能晚于官网 |
+| Microsoft Store | [商店应用页面](https://apps.microsoft.com/detail/9P75HV6KJV0N?hl=zh-CN&gl=CN) | 2.1.701.0 已上架，程序显示 2.1.7；在商店“库”中检查更新 |
 | GitHub 备用 | [2.1.7 Release](https://github.com/zhuixin8/meiti-ai/releases/tag/v2.1.7) | 备用安装包与校验资料 |
 
-桌面端免费下载安装；账号套餐、平台 AI 和其他服务仍按现有规则收费。商店尚在审核的更新不等于已可下载。
+桌面端免费下载安装；账号套餐、平台 AI 和其他服务仍按现有规则收费。商店更新是否已到达某台设备，以该设备商店的更新结果为准；官网 EXE 与商店 MSIX 不交叉覆盖。
 
 ### 开始使用
 
@@ -83,6 +86,12 @@ Windows 桌面端使用你的电脑和网络完成浏览器发布；网页端方
 3. 配置自己的 AI / 图片服务，或使用套餐允许的平台资源；创建内容、检查预览后，选择账号发布。
 
 注册和下载不需要添加微信。需要帮助时，可通过文末的交流群反馈。
+
+### 已有账号与 Google 登录
+
+Google 网站登录目前仅小范围测试，**不是所有用户都已开放，也不是桌面内嵌登录功能**。入口开放后，已有用户应先用原 ALQQ 账号密码登录，再到「头像 → 个人资料 → 登录与通知」验证当前密码并绑定 Google。绑定后仍使用原账号、套餐和内容，不按邮箱自动合并账号；不要把登录页首次 Google 注册当成绑定操作。
+
+仅申请身份标识、邮箱和基本资料，不读取 Gmail 邮件或代用户发信；安全邮箱、通知邮箱及通知开关分别管理。当前普通 Google 登录仍有本站人机校验，已登录账号的绑定流程不额外要求该校验。QQ 登录尚未上线。
 
 ---
 
@@ -114,7 +123,8 @@ Windows 桌面端使用你的电脑和网络完成浏览器发布；网页端方
 | Web 与配套服务 | 页面标题、邮件、账号状态、发布核验与脱敏监控持续更新 |
 | WorkBuddy / 豆包连接 | OAuth 授权供稿、查询、去重和受控确认发布；不是官方市场上架声明 |
 | 连接器发布 | 以工具返回能力与授权为准；直接发布、MCP 定时未开放 |
-| Microsoft Store | 2.1.701.0 已提交正式认证；程序显示仍为 2.1.7，实际可下载版本以商店为准 |
+| Microsoft Store | 2.1.701.0 已通过认证并上架；程序显示仍为 2.1.7，商店独立管理更新 |
+| Google 网站登录 | 小范围测试；支持验证原密码后绑定，不自动合并账号；尚未全量开放 |
 | WorkBuddy 创作专家 | 仍需独立回归，暂缓市场提交 |
 
 后续计划与测试范围见 [开发进度](DEVELOPMENT.md)，不将待办写成已完成功能。
@@ -437,7 +447,9 @@ Use the **web app** for content and account management, the **Windows desktop ap
 
 **Desktop 2.1.7** is publicly available for Windows 10 / 11 x64. It improves verified account status, health scores, onboarding persistence, publishing presets, API preflight and installer baseline isolation. Save your work and wait for tasks to finish before upgrading with the **full installer**. [Official download](https://www.alqq.cn/download/desktop), [Microsoft Store](https://apps.microsoft.com/detail/9P75HV6KJV0N?hl=zh-CN&gl=CN), or [release notes and GitHub mirror](RELEASE-2.1.7.md). Choose one installation channel; do not install one over the other. WebView2 is downloaded if missing; a clean install without the runtime remains an explicitly accepted, uncompleted test, not a passed test.
 
-WorkBuddy and Doubao can connect through user-authorized OAuth for draft submission and receipt queries, subject to ALQQ entitlements. Publishing requests require review in ALQQ; direct and scheduled MCP publishing are not currently open. The Microsoft Store package **2.1.701.0** was submitted for public certification on October 13; this does not claim approval or availability. The app display version remains 2.1.7. The WorkBuddy creative expert remains under validation. See [development status](DEVELOPMENT.md).
+WorkBuddy and Doubao can connect through user-authorized OAuth for draft submission and receipt queries, subject to ALQQ entitlements. Publishing requests require review in ALQQ; direct and scheduled MCP publishing are not currently open. The Microsoft Store package **2.1.701.0 is certified and published**, verified in Partner Center on October 14. The app display version remains 2.1.7; Store installations update through Microsoft Store, not the website installer or code hot updates. The WorkBuddy creative expert remains under validation. See [development status](DEVELOPMENT.md).
+
+Google website sign-in and account linking are in a **limited pilot**, not generally available or included in desktop sign-in. Existing users must sign in with their ALQQ password and link Google in their profile; accounts are never merged automatically by matching email. Password sign-in remains available. Only basic identity information is requested, not Gmail content or sending permissions. QQ sign-in has not launched.
 
 Registration and desktop downloads are free. Your AI / image providers charge for their services; hosted resources and quotas depend on your ALQQ plan or permissions. Platform login credentials are encrypted on the ALQQ service and supplied to authorized desktop sessions when needed. Local drafts and image caches do not replace the online service. Login verification and platform reviews may require your attention.
 
